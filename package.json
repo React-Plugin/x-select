@@ -1,5 +1,5 @@
 {
-  "name": "x-select",
+  "name": "jsx-select",
   "version": "0.0.0",
   "description": "react xui x-select",
   "main": "./lib/index.js",

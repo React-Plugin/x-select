@@ -1,21 +1,14 @@
 # x-list
 react list列表组件
 # npm 
-    npm install --save jsx-list
+    npm install --save jsx-select
 # demo
 ```
-      <List>
-        {
-          [{text:'demo1'},{text:'demo2'},{text:'demo3'},{text:'demo4'},{text:'demo5'},{text:'demo6'}].map( (item,index)=><Option key={index} onSelect={this.onSelectHandle.bind(this,item,index)}>{item.text}</Option>)
-        }
-      </List>
-```
-```
-        <List>
+        <Select>
           <Option>aaa</Option>
           <Option>bbb</Option>
           <Option>ccc</Option>
-        </List>
+        </Select>
 ```
 
 ### 关于作者

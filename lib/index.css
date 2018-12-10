@@ -1,0 +1,18 @@
+.x-list .x-list-option {
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid #e8e8e8;
+}
+.x-list .x-list-option:hover {
+  background-color: #fcfcfc;
+}
+.x-list .x-list-option.x-list-option-selected {
+  background-color: #eeeeee;
+}
+.x-list .x-list-option.x-list-option-disabled {
+  background-color: #ccc;
+  color: #ccc;
+}
+.x-list .x-list-option:last-child {
+  border-bottom: none;
+}

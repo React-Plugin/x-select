@@ -14,7 +14,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Select placeholder="请选择">
+        <Select placeholder="请选择" name="myselect" width={120}>
           <Option>你好1</Option>
           <Option>我好2</Option>
         </Select>

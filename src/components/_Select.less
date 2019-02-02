@@ -1,4 +1,62 @@
+@font-face {
+    font-family: 'xui';  /* project id 942163 */
+    src: url('//at.alicdn.com/t/font_942163_70sf6saucus.eot');
+    src: url('//at.alicdn.com/t/font_942163_70sf6saucus.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_942163_70sf6saucus.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_942163_70sf6saucus.woff') format('woff'),
+    url('//at.alicdn.com/t/font_942163_70sf6saucus.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_942163_70sf6saucus.svg#xui') format('svg');
+  }
+  .xui {
+    font-family: "xui" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-arrowdown:before {
+    content: "\e692";
+  }
+  
+  .icon-arrowleft:before {
+    content: "\e693";
+  }
+  
+  .icon-arrowright:before {
+    content: "\e694";
+  }
+  
+  .icon-arrowup:before {
+    content: "\e695";
+  }
+  
+  .icon-close:before {
+    content: "\e69a";
+  }
+  
+  .icon-add:before {
+    content: "\e6b9";
+  }
+  
+  .icon-next:before {
+    content: "\e697";
+  }
+  
+  .icon-next1:before {
+    content: "\e6d1";
+  }
+  
+  .icon-last:before {
+    content: "\e6d2";
+  }
+  
+  .icon-last1:before {
+    content: "\e62a";
+  }
+  
 .x-select{
+  font-size:12px;
     box-sizing: border-box;
     .x-select-handle{
         padding:2px 10px;
@@ -6,25 +64,45 @@
         display: inline-block;
         border-radius: 3px;
         cursor: pointer;
+        position:relative;
+        padding-right:24px;
+        .x-arrow{
+            position: absolute;
+            right:5px;
+            top:50%;
+            transform: translateY(-50%);
+            font-size:12px;
+        }
+        .x-selected-item{
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
     }
-    .x-select-hide{
-        display:none;
-    }
-    .x-select-show{
-        display:block;
-    }
-    .x-select-list{
-        box-sizing: border-box;
-        position: absolute;
-        z-index: 1;
-        border:1px solid #cccccc;
-        background-color: #fff;
-        .x-list-option{
-            padding:0 10px;
-            &:hover{
-                background-color: #cccccc;
-                cursor: pointer;
-            }
+}
+.x-select-hide{
+    display:none;
+}
+.x-select-show{
+    display:block;
+}
+.x-select-list{
+    font-size:12px;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 1;
+    border:1px solid #cccccc;
+    background-color: #fff;
+    .x-list-option{
+        padding:0 10px;
+        line-height: 22px;
+        &:hover{
+            background-color: #fafafa;
+            cursor: pointer;
+        }
+        &.x-list-option-selected{
+          background-color: #fafafa;
+          font-weight: bold;
         }
     }
 }

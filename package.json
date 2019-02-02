@@ -1,6 +1,6 @@
 {
   "name": "jsx-select",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "react xui x-select",
   "main": "./lib/index.js",
   "repository": {
@@ -23,7 +23,7 @@
     "doc-dev": "npm-run-all docs:clean docs:prepare docs:build:watch",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
-    "docs:build": "gitbook build -g react-plugin/x-input",
+    "docs:build": "gitbook build -g react-xui/x-select",
     "docs:build:watch": "gitbook serve",
     "docs:publish": "cd _book && git init && git checkout -b gh-pages && git add --all && git commit -am \"update book\" && git push git@github.com:react-plugin/x-select gh-pages --force"
   },

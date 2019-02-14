@@ -42,28 +42,59 @@ const ListContainer = (ListComponent,SelectComponent)=> class extends Component 
     this.state = {isShow:props.isShow || false , selectItem:{value:this.props.defaultValue},listStyle:{}};
     this.onClick = this.onClick.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.unSelect = this.unSelect.bind(this);
   }
   onClick(){
     this.toggleShow();
   }
-  toggleShow(){
-    this.setState({isShow:!this.state.isShow},()=>{
-      //获取元素位置
-      let dom = ReactDOM.findDOMNode(this.handle);
-      let {x,y} = getOffset(dom);
-      console.log(x,y)
-      let minWidth = dom.offsetWidth;
-      this.setState({listStyle:{left:x,top:y,minWidth}})
-    });
+  setPosition(){
+    //获取元素位置
+    let dom = ReactDOM.findDOMNode(this.handle);
+    let {x,y} = getOffset(dom);
+    // console.log(x,y)
+    let minWidth = dom.offsetWidth;
+    this.setState({listStyle:{left:x,top:y,minWidth}});
   }
-  onSelect(value,text,e){
-    e.nativeEvent.stopImmediatePropagation();
+  toggleShow(){
+    this.setState({isShow:!this.state.isShow},this.setPosition);
+  }
+  findIndex(arr,callback) { 
+      for (var i = 0; i < arr.length; i++) { 
+          if (callback (arr[i]) ) return i; 
+      } 
+      return -1; 
+  }
+  //移除数组项,返回新数组
+  remove = function(arr,callback) { 
+      var index = this.findIndex(arr,callback); 
+      if (index > -1) { 
+        return arr.filter((item,i)=>i != index);
+      } 
+  }
+  onSelect(value,text,selected,e){
+    // console.log(selected)
+    let selectValue = []
     if(this.props.multiple){
-
+      if(typeof this.state.selectItem.value ==='object'){
+        //取消选中
+        if(selected){
+          selectValue = this.remove(this.state.selectItem.value,o=>o==value);
+        }else{
+          selectValue = selectValue.concat(this.state.selectItem.value,value);
+        }
+      }else{
+        selectValue = selectValue.concat([this.state.selectItem.value],value);
+      }
+    }else{
+      selectValue.push(value);
     }
-    this.setState({selectItem:{value,text}},()=>{
-      this.toggleShow();
+    this.setState({selectItem:{value:selectValue,text}},()=>{
+      if(!this.props.multiple){
+        this.toggleShow();
+      }
+      this.setPosition();
     });
+    e.nativeEvent.stopImmediatePropagation();
   }
   hide=()=>{
     this.setState({isShow:false});
@@ -76,26 +107,30 @@ const ListContainer = (ListComponent,SelectComponent)=> class extends Component 
       let selected = false;
       let {selectItem} = this.state;
       if(typeof selectItem.value==='object'){
-        selected = selectItem.value.filter(it=>it.value == value).length>0 ;
+        selected = selectItem.value.filter(it=>it == value).length>0 ;
       }else{
         selected = selectItem.value == value;
       }
       if(selected){
         selectedItem.push({value,text});
       }
-      return (<Option key={value} {...item.props} selected={selected} onSelect={this.onSelect.bind(this,value,text)}/>)
+      return (<Option key={value} {...item.props} selected={selected} onSelect={this.onSelect.bind(this,value,text,selected)}/>)
     });
     return {
       options,
       selectedItem
     }
   } 
+  //取消选中项
+  unSelect(v,e){
+    this.onSelect(v,'',true,e)
+  }
   render () {
     let {children,multiple,width} = this.props;
     let {options,selectedItem}=this.formatlist(children);
     return (
       <div className="x-select" onBlur={this.hide}>
-        <SelectComponent multiple={multiple} onHide={this.hide} {...this.props} isActive={this.state.isShow} selectedItem={selectedItem} onClick={this.onClick} ref={ref=>this.handle=ref}/>
+        <SelectComponent multiple={multiple} onHide={this.hide} {...this.props} isActive={this.state.isShow} unSelect={this.unSelect} selectedItem={selectedItem} onClick={this.onClick} ref={ref=>this.handle=ref}/>
           <ListComponent>
             <div className={this.state.isShow?'x-select-list x-select-show':'x-select-hide'} style={this.state.listStyle}>
                 {

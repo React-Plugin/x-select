@@ -38,15 +38,20 @@ export default class SelectInput extends Component{
         window.removeEventListener('blur',this.onBlur);
         document.removeEventListener('click', this.onBlur);
     }
+    //取消选择项
+    unSelect(v,e){
+        e.stopPropagation();
+        this.props.unSelect(v,e);
+    }
     formatSelected(){
         const {selectedItem,placeholder,name,multiple} = this.props;
         if(selectedItem.length ==0){
-            return <div><div className="x-selected-item">{placeholder}</div><input type="hidden" ref={ref=>this.input=ref} name={name} defaultValue=''/></div>
+            return <div><div>{placeholder}</div><input type="hidden" ref={ref=>this.input=ref} name={name} defaultValue=''/></div>
         }else{
             let selectedvalue = [];
             let arr = selectedItem.map(item=>{
                 selectedvalue.push(item.value);
-                return <div title={item.text} className="x-selected-item" key={item.value}>{item.text}</div>
+                return <div title={item.text} className='x-selected-item' key={item.value}>{item.text}{multiple?<i className='xui icon-close' onClick={this.unSelect.bind(this,item.value)}/>:undefined}</div>
             })
             if(!multiple){
                 selectedvalue = selectedvalue.join('');
@@ -57,10 +62,10 @@ export default class SelectInput extends Component{
         }
     }
     render(){
-        const {isActive,onClick,width} = this.props;
+        const {isActive,onClick,width,multiple} = this.props;
         // const {text,value} = selectedItem||{};
         return (
-            <div className="x-select-handle" style={{width}} onClick={this.onClick}>
+            <div className={"x-select-handle "+ (multiple? "multiple":"")} style={{width}} onClick={this.onClick}>
                 {this.formatSelected()}
                 <i className={!this.state.isExtends ? "xui icon-arrowdown x-arrow":"xui icon-arrowup x-arrow"}/>
             </div>

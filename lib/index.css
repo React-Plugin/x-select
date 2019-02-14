@@ -61,7 +61,7 @@
   transform: translateY(-50%);
   font-size: 12px;
 }
-.x-select .x-select-handle .x-selected-item {
+.x-select .x-selected-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -91,4 +91,22 @@
 .x-select-list .x-list-option.x-list-option-selected {
   background-color: #fafafa;
   font-weight: bold;
+}
+.multiple .x-selected-item {
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  margin: 3px 4px 0 0;
+  display: inline-block;
+  padding: 0 20px 0 10px;
+  line-height: 22px;
+  position: relative;
+  white-space: normal;
+  cursor: default;
+}
+.multiple .x-selected-item i {
+  position: absolute;
+  right: 4px;
+  font-size: 12px;
+  cursor: pointer;
 }

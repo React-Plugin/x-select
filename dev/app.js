@@ -30,6 +30,24 @@ class App extends React.Component {
           <Option value="1">这是一段很长很长的文字这是一段很长很长的文字</Option>
           <Option value="2">我好2</Option>
         </Select>
+          多选:
+        <Select placeholder="请选择" multiple={true} defaultValue="" name="myselect" >
+          <Option value="1">这是一段很长很长的文字这是一段很长很长的文字</Option>
+          <Option value="2">我好2</Option>
+          <Option value="3">E1</Option>
+          <Option value="4">D3</Option>
+          <Option value="5">D5</Option>
+          <Option value="6">我好2</Option>
+        </Select>
+          多选:
+        <Select placeholder="请选择" multiple={true} width={120} defaultValue="" name="myselect" >
+          <Option value="1">这是一段很长很长的文字这是一段很长很长的文字</Option>
+          <Option value="2">我好2</Option>
+          <Option value="3">E1</Option>
+          <Option value="4">D3</Option>
+          <Option value="5">D5</Option>
+          <Option value="6">我好2</Option>
+        </Select>
         </div>
       </div>
     )

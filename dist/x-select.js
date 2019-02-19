@@ -418,7 +418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var _this = _possibleConstructorReturn(this, (SelectInput.__proto__ || Object.getPrototypeOf(SelectInput)).call(this, props));
 
-	        _this.state = { isExtends: false };
+	        _this.state = { isExtends: false, overItem: { isover: false } };
 	        _this.onClick = _this.onClick.bind(_this);
 	        _this.onBlur = _this.onBlur.bind(_this);
 	        return _this;
@@ -483,6 +483,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                name = _props.name,
 	                multiple = _props.multiple;
 
+	            var titleArr = [];
 	            if (selectedItem.length == 0) {
 	                return _react2.default.createElement('div', null, _react2.default.createElement('div', null, placeholder), _react2.default.createElement('input', { type: 'hidden', ref: function ref(_ref) {
 	                        return _this2.input = _ref;
@@ -491,17 +492,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var selectedvalue = [];
 	                var arr = selectedItem.map(function (item) {
 	                    selectedvalue.push(item.value);
-	                    return _react2.default.createElement('div', { title: item.text, className: 'x-selected-item', key: item.value }, item.text, multiple ? _react2.default.createElement('i', { className: 'xui icon-close', onClick: _this2.unSelect.bind(_this2, item.value) }) : undefined);
+	                    titleArr.push(item.text);
+	                    return _react2.default.createElement('div', { className: 'x-selected-item', key: item.value }, item.text, multiple ? _react2.default.createElement('i', { className: 'xui icon-close', onClick: _this2.unSelect.bind(_this2, item.value) }) : undefined);
 	                });
 	                if (!multiple) {
 	                    selectedvalue = selectedvalue.join('');
 	                } else {
 	                    selectedvalue = JSON.stringify(selectedvalue);
 	                }
-	                return _react2.default.createElement('div', null, arr, _react2.default.createElement('input', { type: 'hidden', ref: function ref(_ref2) {
+	                if (this.state.overItem.isover) {
+	                    arr = _react2.default.createElement('div', null, 'select ' + this.props.selectedItem.length + ' items');
+	                }
+	                return _react2.default.createElement('div', { ref: function ref(_ref3) {
+	                        return _this2.list = _ref3;
+	                    }, title: titleArr.join(',') }, arr, _react2.default.createElement('input', { type: 'hidden', ref: function ref(_ref2) {
 	                        return _this2.input = _ref2;
 	                    }, name: name, defaultValue: selectedvalue }));
 	            }
+	        }
+	    }, {
+	        key: 'computItem',
+	        value: function computItem() {
+	            if (this.list && this.props.selectedItem.length > 1) {
+	                var c = this.list.querySelectorAll('.x-selected-item');
+	                if (c.length) {
+	                    var lw = this.list.offsetWidth;
+	                    var cw = 0;
+	                    Array.prototype.slice.call(c).forEach(function (item) {
+	                        cw += item.offsetWidth + 4;
+	                    });
+	                    if (cw > lw && !this.state.overItem.isover) {
+	                        //超出下拉宽显示选中个数
+	                        this.setState({ "overItem": { isover: true } });
+	                    } else if (this.state.overItem.isover) {
+	                        this.setState({ "overItem": { isover: false } });
+	                    }
+	                }
+	            } else if (this.state.overItem.isover) {
+	                this.setState({ "overItem": { isover: false } });
+	            }
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.computItem();
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            this.computItem();
 	        }
 	    }, {
 	        key: 'render',

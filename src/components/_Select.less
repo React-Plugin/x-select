@@ -57,28 +57,32 @@
   
 .x-select{
   font-size:12px;
+  box-sizing: border-box;
+  .x-select-handle{
     box-sizing: border-box;
-    .x-select-handle{
-        padding:2px 10px;
-        border:1px solid #cccccc;
-        display: inline-block;
-        border-radius: 3px;
-        cursor: pointer;
-        position:relative;
-        padding-right:24px;
-        .x-arrow{
-            position: absolute;
-            right:5px;
-            top:50%;
-            transform: translateY(-50%);
-            font-size:12px;
-        }
+    height:30px;
+    line-height: 30px;
+    padding:0 10px;
+    border:1px solid #cccccc;
+    display: inline-block;
+    border-radius: 3px;
+    cursor: pointer;
+    position:relative;
+    padding-right:24px;
+    overflow: hidden;
+    .x-arrow{
+        position: absolute;
+        right:5px;
+        top:50%;
+        transform: translateY(-50%);
+        font-size:12px;
     }
-    .x-selected-item{
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  }
+  .x-selected-item{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 .x-select-hide{
     display:none;
@@ -116,8 +120,11 @@
     padding:0 20px 0 10px;
     line-height: 22px;
     position: relative;
-    white-space: normal;
     cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width:calc(~"100% - 30px");
     i{
       position: absolute;
       right:4px;

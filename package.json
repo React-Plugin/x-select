@@ -1,6 +1,6 @@
 {
   "name": "jsx-select",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "react xui x-select",
   "main": "./lib/index.js",
   "repository": {

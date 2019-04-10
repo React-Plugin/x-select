@@ -273,6 +273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _this2.toggleShow();
 	          }
 	          _this2.setPosition();
+	          _this2.props.onChange && _this2.props.onChange(_this2.state.selectItem.value);
 	        });
 	        e.nativeEvent.stopImmediatePropagation();
 	      }

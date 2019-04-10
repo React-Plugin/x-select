@@ -93,6 +93,7 @@ const ListContainer = (ListComponent,SelectComponent)=> class extends Component 
         this.toggleShow();
       }
       this.setPosition();
+      this.props.onChange && this.props.onChange(this.state.selectItem.value);
     });
     e.nativeEvent.stopImmediatePropagation();
   }

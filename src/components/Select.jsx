@@ -31,21 +31,30 @@ const ListContainer = (ListComponent,SelectComponent)=> class extends Component 
   static propTypes ={
     children: PropTypes.array,
     defaultValue: PropTypes.oneOfType([PropTypes.array,PropTypes.string]),
+    value:PropTypes.oneOfType([PropTypes.array,PropTypes.string]),
     multiple:PropTypes.bool,
+    onChange:PropTypes.func
   }
   static defaultProps = {
     defaultValue:'',
+    value:null,
     multiple:false
   }
   constructor(props){
     super(props);
-    this.state = {isShow:props.isShow || false , selectItem:{value:this.props.defaultValue},listStyle:{}};
+    this.state = {isShow:props.isShow || false , selectItem:{value:this.props.value!=null? this.props.value : this.props.defaultValue},listStyle:{}};
+    // console.log(this.state.selectItem)
     this.onClick = this.onClick.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.unSelect = this.unSelect.bind(this);
   }
   onClick(){
     this.toggleShow();
+  }
+  componentWillReceiveProps(newProps){
+    if (newProps.value !=null && newProps.value != this.state.selectItem.value) {
+      this.setState({selectItem:{value:newProps.value}});
+    }
   }
   setPosition(){
     //获取元素位置

@@ -203,7 +203,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.setState({ isShow: false });
 	      };
 
-	      _this.state = { isShow: props.isShow || false, selectItem: { value: _this.props.defaultValue }, listStyle: {} };
+	      _this.state = { isShow: props.isShow || false, selectItem: { value: _this.props.value != null ? _this.props.value : _this.props.defaultValue }, listStyle: {} };
+	      // console.log(this.state.selectItem)
 	      _this.onClick = _this.onClick.bind(_this);
 	      _this.onSelect = _this.onSelect.bind(_this);
 	      _this.unSelect = _this.unSelect.bind(_this);
@@ -214,6 +215,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      key: 'onClick',
 	      value: function onClick() {
 	        this.toggleShow();
+	      }
+	    }, {
+	      key: 'componentWillReceiveProps',
+	      value: function componentWillReceiveProps(newProps) {
+	        if (newProps.value != null && newProps.value != this.state.selectItem.value) {
+	          this.setState({ selectItem: { value: newProps.value } });
+	        }
 	      }
 	    }, {
 	      key: 'setPosition',
@@ -337,9 +345,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }(_react.Component), _class.propTypes = {
 	    children: _propTypes2.default.array,
 	    defaultValue: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.string]),
-	    multiple: _propTypes2.default.bool
+	    value: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.string]),
+	    multiple: _propTypes2.default.bool,
+	    onChange: _propTypes2.default.func
 	  }, _class.defaultProps = {
 	    defaultValue: '',
+	    value: null,
 	    multiple: false
 	  }, _temp;
 	};

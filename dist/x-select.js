@@ -219,8 +219,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	      key: 'componentWillReceiveProps',
 	      value: function componentWillReceiveProps(newProps) {
-	        if (newProps.value != null && newProps.value != this.state.selectItem.value) {
-	          this.setState({ selectItem: { value: newProps.value } });
+	        var _this2 = this;
+
+	        if (typeof newProps.value !== 'undefined') {
+	          if (_typeof(newProps.value) === 'object') {
+	            if (JSON.stringify(newProps.value) !== JSON.stringify(this.props.value)) {
+	              this.setState({ selectItem: { value: newProps.value } }, function () {
+	                _this2.props.onChange && _this2.props.onChange(_this2.state.selectItem.value);
+	              });
+	            }
+	          } else if (newProps.value !== this.props.value) {
+	            this.setState({ selectItem: { value: newProps.value } }, function () {
+	              _this2.props.onChange && _this2.props.onChange(_this2.state.selectItem.value);
+	            });
+	          }
 	        }
 	      }
 	    }, {
@@ -256,7 +268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	      key: 'onSelect',
 	      value: function onSelect(value, text, selected, e) {
-	        var _this2 = this;
+	        var _this3 = this;
 
 	        // console.log(selected)
 	        var selectValue = [];
@@ -271,31 +283,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	              selectValue = selectValue.concat(this.state.selectItem.value, value);
 	            }
 	          } else {
-	            selectValue = selectValue.concat([this.state.selectItem.value], value);
+	            if (selected) {
+	              selectValue = this.remove([this.state.selectItem.value], function (o) {
+	                return o == value;
+	              });
+	            } else {
+	              selectValue = selectValue.concat([this.state.selectItem.value], value);
+	            }
 	          }
 	        } else {
-	          selectValue.push(value);
+	          selectValue = value;
 	        }
 	        this.setState({ selectItem: { value: selectValue, text: text } }, function () {
-	          if (!_this2.props.multiple) {
-	            _this2.toggleShow();
+	          if (!_this3.props.multiple) {
+	            _this3.toggleShow();
 	          }
-	          _this2.setPosition();
-	          _this2.props.onChange && _this2.props.onChange(_this2.state.selectItem.value);
+	          _this3.setPosition();
+	          _this3.props.onChange && _this3.props.onChange(_this3.state.selectItem.value);
 	        });
 	        e.nativeEvent.stopImmediatePropagation();
 	      }
 	    }, {
 	      key: 'formatlist',
 	      value: function formatlist(children) {
-	        var _this3 = this;
+	        var _this4 = this;
 
 	        var selectedItem = [];
 	        var options = children.map(function (item) {
 	          var value = item.props.value || item.props.children;
 	          var text = item.props.children;
 	          var selected = false;
-	          var selectItem = _this3.state.selectItem;
+	          var selectItem = _this4.state.selectItem;
 
 	          if (_typeof(selectItem.value) === 'object') {
 	            selected = selectItem.value.filter(function (it) {
@@ -307,7 +325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (selected) {
 	            selectedItem.push({ value: value, text: text });
 	          }
-	          return _react2.default.createElement(Option, _extends({ key: value }, item.props, { selected: selected, onSelect: _this3.onSelect.bind(_this3, value, text, selected) }));
+	          return _react2.default.createElement(Option, _extends({ key: value }, item.props, { selected: selected, onSelect: _this4.onSelect.bind(_this4, value, text, selected) }));
 	        });
 	        return {
 	          options: options,
@@ -324,7 +342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	      key: 'render',
 	      value: function render() {
-	        var _this4 = this;
+	        var _this5 = this;
 
 	        var _props = this.props,
 	            children = _props.children,
@@ -336,7 +354,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            selectedItem = _formatlist.selectedItem;
 
 	        return _react2.default.createElement('div', { className: 'x-select', onBlur: this.hide }, _react2.default.createElement(SelectComponent, _extends({ multiple: multiple, onHide: this.hide }, this.props, { isActive: this.state.isShow, unSelect: this.unSelect, selectedItem: selectedItem, onClick: this.onClick, ref: function ref(_ref) {
-	            return _this4.handle = _ref;
+	            return _this5.handle = _ref;
 	          } })), _react2.default.createElement(ListComponent, null, _react2.default.createElement('div', { className: this.state.isShow ? 'x-select-list x-select-show' : 'x-select-hide', style: this.state.listStyle }, options)));
 	      }
 	    }]);
@@ -731,6 +749,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Option2 = _interopRequireDefault(_Option);
 
+	var _propTypes = __webpack_require__(9);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -755,23 +777,87 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var _this = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
 
-	    _this.state = { data: props.data };
+	    _this.onSearch = function (e) {
+	      var value = e.target.value;
+	      _this.setState({ searchKey: value });
+	    };
+
+	    _this.onSelect = function (item, index) {
+	      var onSelect = _this.props.onSelect;
+
+	      onSelect(item, index);
+	    };
+
+	    _this.state = { searchKey: '' };
 	    return _this;
 	  }
 
 	  _createClass(List, [{
+	    key: 'searchRender',
+	    value: function searchRender() {
+	      var showSearch = this.props.showSearch;
+
+	      return showSearch ? _react2.default.createElement(
+	        'div',
+	        { className: 'x-list-search' },
+	        _react2.default.createElement('input', { className: 'x-list-search-input', type: 'text', onChange: this.onSearch })
+	      ) : undefined;
+	    }
+	  }, {
+	    key: 'renderChildren',
+
+	    //渲染options，判断是data还是直接children
+	    value: function renderChildren() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          data = _props.data,
+	          children = _props.children,
+	          field = _props.field,
+	          onSelect = _props.onSelect;
+
+	      if (data && data.length > 0) {
+	        return data.filter(function (item) {
+	          return item.text.indexOf(_this2.state.searchKey) > -1;
+	        }).map(function (item, index) {
+	          return _react2.default.createElement(
+	            _Option2.default,
+	            { key: index, onSelect: _this2.onSelect.bind(_this2, item, index) },
+	            item[field.text]
+	          );
+	        });
+	      } else {
+	        return children;
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(123);
-	      var _props = this.props,
-	          children = _props.children,
-	          onSelect = _props.onSelect;
+	      // console.log(123)
+	      var _props2 = this.props,
+	          children = _props2.children,
+	          isLoadMore = _props2.isLoadMore,
+	          onSelect = _props2.onSelect,
+	          showSearch = _props2.showSearch,
+	          className = _props2.className;
+
+	      var cls = (className || "") + ' x-list';
 	      var data = this.state.data;
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'x-list' },
-	        children
+	        { className: cls },
+	        this.searchRender(),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'x-list-options' },
+	          this.renderChildren()
+	        ),
+	        isLoadMore ? _react2.default.createElement(
+	          'div',
+	          null,
+	          'load'
+	        ) : undefined
 	      );
 	    }
 	  }]);
@@ -779,6 +865,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return List;
 	}(_react.Component);
 
+	List.propTypes = {
+	  data: _propTypes2.default.array,
+	  children: _propTypes2.default.node,
+	  onSelect: _propTypes2.default.func
+	};
+	List.defaultProps = {
+	  field: {
+	    text: 'text',
+	    value: 'value'
+	  },
+	  onSelect: function onSelect() {}
+	};
 	List.Option = _Option2.default;
 	exports.default = List;
 

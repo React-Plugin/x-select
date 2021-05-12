@@ -1,6 +1,6 @@
 {
   "name": "jsx-select",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react xui x-select",
   "main": "./lib/index.js",
   "repository": {
@@ -56,11 +56,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "jsx-list": "0.0.1"
-  },
-  "peerDependencies": {
-    "react": "^0.14.0 || ^16.0.0",
-    "react-dom": "^0.14.0 || ^16.0.0"
+    "jsx-list": "^1.0.1"
   },
   "tags": [
     "react",

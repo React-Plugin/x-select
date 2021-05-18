@@ -1,7 +1,7 @@
 /*
  * @Author: 田想兵
  * @Date: 2018-12-10 19:00:36
- * @LastEditTime: 2021-05-12 14:12:42
+ * @LastEditTime: 2021-05-17 18:05:28
  * @github: https://github.com/tianxiangbing
  * @Contact: 55342775@qq.com
  * @Desc: 文件描述
@@ -52,6 +52,13 @@ class App extends React.Component {
           <Option value="5">D5</Option>
           <Option value="6">我好2</Option>
         </Select>
+        <div style={{"height":"120px",overflow:'auto'}}>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
           多选:
         <Select placeholder="请选择" onChange={this.onChange} multiple={true} width={180} value={this.state.selectValue} name="myselect" >
           <Option value="1">这是一段很长很长的文字这是一段很长很长的文字</Option>
@@ -61,8 +68,21 @@ class App extends React.Component {
           <Option value="5">D5</Option>
           <Option value="6">我好2</Option>
         </Select>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+        </div>
         <button onClick={e=>this.setState({selectValue:["3"]})}>点我</button>
         </div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
       </div>
     )
   }

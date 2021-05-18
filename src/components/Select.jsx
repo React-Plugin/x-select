@@ -16,16 +16,28 @@ import PropTypes from 'prop-types';
 let Option = List.Option;
 
 // 获取元素在页面上的绝对位置
-function getOffset(element) {
-  let actualLeft = element.offsetLeft;
-  let parent = element.offsetParent;
-  let actualTop = element.offsetTop;
-  while (parent != null) {
-    actualLeft += parent.offsetLeft + (parent.offsetWidth - parent.clientWidth) / 2;
-    actualTop += parent.offsetTop + (parent.offsetHeight - parent.clientHeight) / 2;
-    parent = parent.offsetParent;
+function offset(node) {
+  var offest = {
+    top: 0,
+    left: 0
+  };
+  // 当前为IE11以下, 直接返回{top: 0, left: 0}
+  if (!node.getClientRects().length) {
+    return offest;
   }
-  return { x: actualLeft, y: actualTop + element.offsetHeight };
+  // 当前DOM节点的 display === 'node' 时, 直接返回{top: 0, left: 0}
+  if (window.getComputedStyle(node)['display'] === 'none') {
+    return offest;
+  }
+  // Element.getBoundingClientRect()方法返回元素的大小及其相对于视口的位置。
+  // 返回值包含了一组用于描述边框的只读属性——left、top、right和bottom，单位为像素。除了 width 和 height 外的属性都是相对于视口的左上角位置而言的。
+  // 返回如{top: 8, right: 1432, bottom: 548, left: 8, width: 1424…}
+  offest = node.getBoundingClientRect();
+  var docElement = node.ownerDocument.documentElement;
+  return {
+    top: offest.top + window.pageYOffset - docElement.clientTop,
+    left: offest.left + window.pageXOffset - docElement.clientLeft
+  };
 }
 const ListContainer = (ListComponent, SelectComponent) => class extends Component {
   static propTypes = {
@@ -52,15 +64,15 @@ const ListContainer = (ListComponent, SelectComponent) => class extends Componen
     this.toggleShow();
   }
   componentWillReceiveProps(newProps) {
-    if(typeof newProps.value !== 'undefined'){
+    if (typeof newProps.value !== 'undefined') {
       if (typeof newProps.value === 'object') {
         if (JSON.stringify(newProps.value) !== JSON.stringify(this.props.value)) {
-          this.setState({ selectItem: { value: newProps.value } },()=>{
+          this.setState({ selectItem: { value: newProps.value } }, () => {
             this.props.onChange && this.props.onChange(this.state.selectItem.value);
           });
-        } 
-      }else if (newProps.value !== this.props.value) {
-        this.setState({ selectItem: { value: newProps.value } },()=>{
+        }
+      } else if (newProps.value !== this.props.value) {
+        this.setState({ selectItem: { value: newProps.value } }, () => {
           this.props.onChange && this.props.onChange(this.state.selectItem.value);
         });
       }
@@ -69,10 +81,11 @@ const ListContainer = (ListComponent, SelectComponent) => class extends Componen
   setPosition() {
     //获取元素位置
     let dom = ReactDOM.findDOMNode(this.handle);
-    let { x, y } = getOffset(dom);
+    let { left, top } = offset(dom);
     // console.log(x,y)
     let minWidth = dom.offsetWidth;
-    this.setState({ listStyle: { left: x, top: y, minWidth } });
+    let y = dom.offsetHeight + top + 2;
+    this.setState({ listStyle: { left: left, top: y, minWidth } });
   }
   toggleShow() {
     this.setState({ isShow: !this.state.isShow }, this.setPosition);

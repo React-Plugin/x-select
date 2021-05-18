@@ -353,9 +353,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.onSelect(v, '', true, e);
 	      }
 	    }, {
+	      key: 'componentDidUpdate',
+	      value: function componentDidUpdate() {
+	        if (this.state.isShow) {
+	          this.startTimer();
+	        } else {
+	          this.stopTimer();
+	        }
+	      }
+	    }, {
+	      key: 'startTimer',
+	      value: function startTimer() {
+	        var _this5 = this;
+
+	        if (!this.timer) {
+	          this.timer = setTimeout(function () {
+	            clearTimeout(_this5.timer);
+	            _this5.timer = null;
+	            _this5.setPosition();
+	            // console.log('timer...')
+	          }, 200);
+	        }
+	      }
+	    }, {
+	      key: 'stopTimer',
+	      value: function stopTimer() {
+	        if (this.timer) {
+	          clearTimeout(this.timer);
+	          this.timer = null;
+	        }
+	      }
+	    }, {
 	      key: 'render',
 	      value: function render() {
-	        var _this5 = this;
+	        var _this6 = this;
 
 	        var _props = this.props,
 	            children = _props.children,
@@ -367,7 +398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            selectedItem = _formatlist.selectedItem;
 
 	        return _react2.default.createElement('div', { className: 'x-select', onBlur: this.hide }, _react2.default.createElement(SelectComponent, _extends({ multiple: multiple, onHide: this.hide }, this.props, { isActive: this.state.isShow, unSelect: this.unSelect, selectedItem: selectedItem, onClick: this.onClick, ref: function ref(_ref) {
-	            return _this5.handle = _ref;
+	            return _this6.handle = _ref;
 	          } })), _react2.default.createElement(ListComponent, null, _react2.default.createElement('div', { className: this.state.isShow ? 'x-select-list x-select-show' : 'x-select-hide', style: this.state.listStyle }, options)));
 	      }
 	    }]);

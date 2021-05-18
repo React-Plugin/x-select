@@ -162,6 +162,29 @@ const ListContainer = (ListComponent, SelectComponent) => class extends Componen
   unSelect(v, e) {
     this.onSelect(v, '', true, e)
   }
+  componentDidUpdate() {
+    if (this.state.isShow) {
+      this.startTimer();
+    } else {
+      this.stopTimer();
+    }
+  }
+  startTimer() {
+    if(!this.timer){
+      this.timer = setTimeout(() => {
+        clearTimeout(this.timer);
+        this.timer =null;
+        this.setPosition();
+        // console.log('timer...')
+      }, 200);
+    }
+  }
+  stopTimer() {
+    if(this.timer){
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
   render() {
     let { children, multiple, width } = this.props;
     let { options, selectedItem } = this.formatlist(children);
